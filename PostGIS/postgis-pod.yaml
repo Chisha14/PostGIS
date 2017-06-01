@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgis
+  labels:
+    name: postgis
+spec:
+  containers:
+    - name: postgis
+      image: mdillon/postgis:9.2-alpine
+      env:
+        - name: DB_PASS
+          value: password
+        - name: PGISDATA
+          value: /var/lib/postgis/data/pgisdata
+      ports:
+        - containerPort: 5432
+      volumeMounts:
+        - mountPath: /var/lib/postgis/data
+          name: pgis-data
+  volumes:
+    - name: pgis-data
+      persistentVolumeClaim:
+        claimName: pgis-data-claim
